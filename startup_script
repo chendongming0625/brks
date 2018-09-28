@@ -1,0 +1,55 @@
+#!/bin/bash
+#chkconfig:2345 10 90
+#description:myservice.....
+service_name="hello"
+service_path=/root/hello
+#chkconfig --add "sh_name"
+#chkconfig test on
+
+start(){
+	echo "---------------start--------------"
+	($service_path) &
+
+}
+stop(){
+
+	pid=$(ps -ef|grep $service_name |grep -v grep |awk '{print $2}')
+	
+	if [ ! $pid ]; then
+		echo "service is not exit..."
+	else
+	  	kill -9 $pid
+	fi 
+
+
+#	if[ ! $pid ]; then
+#		kill -9 $pid
+#	else
+#		echo "service is not exit..."
+#	fi
+}
+
+restart(){
+	stop
+	start
+
+}
+case $1 in
+start):
+	start
+	;;
+stop):
+	echo "------------stop------------------"
+	echo $pid
+	stop
+	;;
+restart):
+	echo "-----------restart----------------"
+	restart
+	;;
+*):
+	echo "argument is error...."
+	;;
+esac
+
+exit 0
